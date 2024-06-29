@@ -13,8 +13,8 @@ on:
   push:
     branches: 
       - master
-  # schedule:
-  #   - cron: 0 20 * * *
+schedule:
+  - cron: 0 20 * * *
   release:
     types: [published]
 
@@ -80,8 +80,34 @@ jobs:
 
           #
           # ===============================================================
-          # 
+          # 自定义包及使用平台
+          cat <<EOF >>openwrt/.config
+          CONFIG_TARGET_amlogic=y
+          CONFIG_TARGET_amlogic_meson8b=y
+          CONFIG_TARGET_amlogic_meson8b_DEVICE_thunder-onecloud=y
+          CONFIG_TARGET_KERNEL_PARTSIZE=32
+          CONFIG_TARGET_ROOTFS_PARTSIZE=${{ github.event.inputs.OP_rootfs }}
+          CONFIG_KERNEL_EXT4_FS_SECURITY=y
+        # CONFIG_TARGET_ROOTFS_SQUASHFS is not set
+        # CONFIG_PACKAGE_dnsmasq is not set
 
+          CONFIG_PACKAGE_dnsmasq-full=y
+          CONFIG_PACKAGE_luci-app-firewall=y
+          CONFIG_PACKAGE_bash=y
+          CONFIG_PACKAGE_kmod-nft-socket=y
+          CONFIG_PACKAGE_fuse-utils=y
+          CONFIG_PACKAGE_luci-app-opkg=y
+          CONFIG_PACKAGE_luci-base=y
+          CONFIG_PACKAGE_ethtool=y
+          CONFIG_PACKAGE_automount=y
+          CONFIG_PACKAGE_autocore=y
+          CONFIG_PACKAGE_autosamba=y
+          CONFIG_PACKAGE_kmod-usb-net-rndis=y
+          CONFIG_PACKAGE_kmod-usb-net=y
+          CONFIG_PACKAGE_kmod-usb-net-cdc-ether=y
+          CONFIG_PACKAGE_zram-swap=y
+          EOF
+############################################
           sed -i 's/^[ \t]*//g' ./.config
           make defconfig
 
