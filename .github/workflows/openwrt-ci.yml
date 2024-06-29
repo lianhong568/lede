@@ -80,7 +80,7 @@ jobs:
 
           #
           # ===============================================================
-          # 自定义包及使用平台
+          # 自定义包及使用平台玩客云
           cat <<EOF >>openwrt/.config
           CONFIG_TARGET_amlogic=y
           CONFIG_TARGET_amlogic_meson8b=y
